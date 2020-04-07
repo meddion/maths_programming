@@ -82,22 +82,14 @@ pub fn simplex_method(
 /// The iterations of the simplex algorithm involve exchanging basic variables
 /// with non-basic variables by using matrix row operations.
 fn apply_row_operations(pivot: (usize, usize), mut table: na::DMatrix<f32>) -> na::DMatrix<f32> {
-    let n_cols = table.ncols();
-    let mut pivot_row: Vec<f32> = (0..n_cols).map(|i| table[(pivot.1, i)]).collect();
     for i in 0..table.nrows() {
         if pivot.1 == i {
             continue;
         }
         // The row the entering variable of which we wanna set to 0
         let target_entry = table[(i, pivot.0)];
-        let p_entry = pivot_row[pivot.0];
-        pivot_row = pivot_row
-            .into_iter()
-            .map(|entry| (entry / p_entry) * -target_entry)
-            .collect();
-
-        for j in 0..n_cols {
-            table[(i, j)] += pivot_row[j];
+        for j in 0..table.ncols() {
+            table[(i, j)] += (table[(pivot.1, j)] / table[(pivot.1, pivot.0)]) * -target_entry;
         }
     }
     table
@@ -144,10 +136,10 @@ fn get_next_pivot(table: &na::DMatrix<f32>) -> Option<(usize, usize)> {
         pivot = Some((i, ratio));
     }
     // Returns the entry point index and pivot row index
-    match pivot {
-        Some(p) => Some((entry_index, p.0)),
-        _ => None,
+    if let Some(p) = pivot {
+        return Some((entry_index, p.0));
     }
+    None
 }
 
 /// Create an augmented matrix from the given constraints and objective function
@@ -159,7 +151,6 @@ fn create_augmented_mat(
     // Count the objective function row as well
     let n_rows = constr.nrows() + 1;
     let n_cols = n_rows + obj.len() + 1;
-
     let mut table = na::DMatrix::<f32>::zeros(n_rows, n_cols);
 
     // Setting up objective function row
