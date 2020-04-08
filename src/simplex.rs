@@ -1,12 +1,10 @@
-use nalgebra as na;
-
 /// The main source of inspiration [https://brilliant.org/wiki/linear-programming/]
 
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-    fn test_problem1() {
+    fn simplex_test_problem1() {
         /*
         Objective function = 20_000x + 45_000y + 85_000z
         Constraints:
@@ -33,7 +31,7 @@ mod tests {
         );
     }
     #[test]
-    fn test_problem2() {
+    fn simplex_test_problem2() {
         /*
         Objective function = 7x + 5y
         Constraints:
@@ -57,6 +55,8 @@ mod tests {
         );
     }
 }
+
+use nalgebra as na;
 
 /// The simplex algorithm itself
 pub fn simplex_method(
