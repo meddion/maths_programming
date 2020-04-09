@@ -1,61 +1,4 @@
 /// The main source of inspiration [https://brilliant.org/wiki/linear-programming/]
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn simplex_test_problem1() {
-        /*
-        Objective function = 20_000x + 45_000y + 85_000z
-        Constraints:
-        10x + 15y + 10z <= 720
-        13x + 5y + 5z <= 680
-        20x + 5y + 10z <= 550
-        z <= 7
-        x, y, z >= 0
-        */
-        let obj_f = vec![20_000.0, 45_000.0, 85_000.0];
-        #[rustfmt::skip]
-        let constraints = na::DMatrix::from_row_slice(4, 3, &[
-            10.0, 15.0, 10.0, 
-            13.0, 5.0, 5.0,
-            20.0, 5.0, 10.0,
-            0.0, 0.0, 1.0,
-        ]);
-        let req = vec![720.0, 680.0, 550.0, 7.0];
-        let res_table = simplex_method(constraints, req, obj_f, true);
-        assert!(
-            (res_table[(0, 8)] - 254_5000.0).abs() < std::f32::EPSILON,
-            "The expected optimal value: 254_5000, the value we got: {}",
-            res_table[(0, 8)]
-        );
-    }
-    #[test]
-    fn simplex_test_problem2() {
-        /*
-        Objective function = 7x + 5y
-        Constraints:
-        2x + 3y <= 90
-        3x + 2y <= 120
-        x, y >= 0
-        */
-        let obj_f = vec![7.0, 5.0];
-        #[rustfmt::skip]
-        let constraints = na::DMatrix::from_row_slice(2, 2, &[
-            2.0, 3.0,
-            3.0, 2.0,
-        ]);
-        let req = vec![90.0, 120.0];
-
-        let res_table = simplex_method(constraints, req, obj_f, true);
-        assert!(
-            (res_table[(0, 5)] - 282.0).abs() < std::f32::EPSILON,
-            "The expected optimal value: 282, the value we got: {}",
-            res_table[(0, 5)]
-        );
-    }
-}
-
 use nalgebra as na;
 
 /// The simplex algorithm itself
@@ -172,4 +115,60 @@ fn create_augmented_mat(
     }
 
     table
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn simplex_test_problem1() {
+        /*
+        Objective function = 20_000x + 45_000y + 85_000z
+        Constraints:
+        10x + 15y + 10z <= 720
+        13x + 5y + 5z <= 680
+        20x + 5y + 10z <= 550
+        z <= 7
+        x, y, z >= 0
+        */
+        let obj_f = vec![20_000.0, 45_000.0, 85_000.0];
+        #[rustfmt::skip]
+        let constraints = na::DMatrix::from_row_slice(4, 3, &[
+            10.0, 15.0, 10.0, 
+            13.0, 5.0, 5.0,
+            20.0, 5.0, 10.0,
+            0.0, 0.0, 1.0,
+        ]);
+        let req = vec![720.0, 680.0, 550.0, 7.0];
+        let res_table = simplex_method(constraints, req, obj_f, true);
+        assert!(
+            (res_table[(0, 8)] - 254_5000.0).abs() < std::f32::EPSILON,
+            "The expected optimal value: 254_5000, the value we got: {}",
+            res_table[(0, 8)]
+        );
+    }
+    #[test]
+    fn simplex_test_problem2() {
+        /*
+        Objective function = 7x + 5y
+        Constraints:
+        2x + 3y <= 90
+        3x + 2y <= 120
+        x, y >= 0
+        */
+        let obj_f = vec![7.0, 5.0];
+        #[rustfmt::skip]
+        let constraints = na::DMatrix::from_row_slice(2, 2, &[
+            2.0, 3.0,
+            3.0, 2.0,
+        ]);
+        let req = vec![90.0, 120.0];
+
+        let res_table = simplex_method(constraints, req, obj_f, true);
+        assert!(
+            (res_table[(0, 5)] - 282.0).abs() < std::f32::EPSILON,
+            "The expected optimal value: 282, the value we got: {}",
+            res_table[(0, 5)]
+        );
+    }
 }
