@@ -5,7 +5,6 @@
 /// [https://youtu.be/MC7l96tW8V8]
 use nalgebra as na;
 use plotters::prelude::*;
-use rand::{self, Rng};
 use std::{error::Error, result::Result};
 
 /// Least squares approximation is all about getting the closest "ok" solution
@@ -64,6 +63,8 @@ pub fn least_squares_ordinary(data_set: &[(f64, f64)]) -> (f64, f64) {
     (m, y_mean - m * x_mean)
 }
 
+// Used as a helper function for least_squares_gen with linear regression problems
+#[allow(dead_code)]
 fn construct_a_and_b(data_set: &[(f64, f64)]) -> (na::DMatrix<f64>, na::DVector<f64>) {
     let mut a = na::DMatrix::from_element(data_set.len(), 2, 1.0);
     for j in 0..data_set.len() {
@@ -74,6 +75,7 @@ fn construct_a_and_b(data_set: &[(f64, f64)]) -> (na::DMatrix<f64>, na::DVector<
 }
 
 // Some hairy code for drawing points and lines
+#[allow(dead_code)]
 fn plot_linear_regression(
     filename: &str,
     points: Vec<(f64, f64)>,
@@ -129,12 +131,12 @@ fn plot_linear_regression(
     Ok(())
 }
 
+#[allow(clippy::unreadable_literal)]
 #[cfg(test)]
 mod tests {
-    #[allow(unused_imports)]
     use super::*;
+    use rand::{self, Rng};
 
-    #[allow(clippy::unreadable_literal)]
     #[test]
     fn lstsq_test_least_squares_gen_1() -> Result<(), Box<dyn Error>> {
         /*  a matrix    b vector
@@ -191,7 +193,6 @@ mod tests {
         }
     }
 
-    #[allow(clippy::unreadable_literal)]
     #[test]
     fn lstsq_test_least_squares_ordinary() -> Result<(), Box<dyn Error>> {
         let data_set = vec![
