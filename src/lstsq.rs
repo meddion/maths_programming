@@ -82,8 +82,7 @@ fn plot_linear_regression(
     m: f64,
     b: f64,
 ) -> Result<(), Box<dyn Error>> {
-    std::fs::create_dir_all("misc")?;
-    let path = format!("misc/lstsq_{}.png", filename);
+    let path = format!("misc/test_output/lstsq_{}.png", filename);
     let root = BitMapBackend::new(&path, (640, 480)).into_drawing_area();
     root.fill(&WHITE)?;
 

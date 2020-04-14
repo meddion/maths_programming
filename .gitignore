@@ -1,3 +1,5 @@
+.vscode
 /target
 Cargo.lock
-misc
+misc/test_output/*
+!misc/test_output/.gitkeep
