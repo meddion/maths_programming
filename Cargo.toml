@@ -5,6 +5,7 @@ authors = ["meddion <volodia23byk@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+nannou = "0.14"
 nalgebra = "0.21.0"
 plotters = "^0.2.12"
 rand = "0.7.3"

@@ -35,12 +35,11 @@ pub fn mix_two_images_parallel(
                 .map(|i| {
                     let x = (i / 3) as u32 % width;
                     let y = (i / 3) as u32 / width;
-                    let mother_p = b.read().unwrap().get_pixel(x, y)[i % 3];
-                    let foreign_p = c.read().unwrap().get_pixel(x, y)[i % 3];
-                    mix_rule.mix(mother_p, foreign_p)
+                    let base_pixel = b.read().unwrap().get_pixel(x, y)[i % 3];
+                    let cover_pixel = c.read().unwrap().get_pixel(x, y)[i % 3];
+                    mix_rule.mix(base_pixel, cover_pixel)
                 })
                 .collect();
-
             s.send((buf, mix_rule.name())).unwrap()
         });
     receiver

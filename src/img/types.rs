@@ -53,7 +53,7 @@ impl MixRule for LightCover {
     }
 }
 
-// map function is a same as in Processing
+// map function is same as in Processing
 fn map(val: i32, in_min: i32, in_max: i32, out_min: i32, out_max: i32) -> i32 {
     (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 }
