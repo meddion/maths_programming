@@ -7,6 +7,11 @@ struct Model {
 }
 
 fn model(app: &App) -> Model {
+    println!("Bresenham for (5, -3) -> (15, 8):");
+    for (i, point) in rasterize([5, -3].into(), [15, 8].into()).iter().enumerate() {
+        println!("{} {:?}", i, point);
+    }
+
     Model {
         _window: app.new_window().size(800, 600).view(view).build().unwrap(),
         line_points: vec![
