@@ -171,4 +171,56 @@ mod tests {
             res_table[(0, 5)]
         );
     }
+    #[test]
+    fn simplex_test_problem3() {
+        /*
+        Objective function = 70_000x + 25_000y + 55_000z
+        Constraints:
+        10x + 15y + 20z <= 620
+        13x + 15y + 5z <= 880
+        10x + 5y + 10z <= 550
+        x <= 10
+        x, y, z >= 0
+        */
+        let obj_f = vec![70_000.0, 25_000.0, 55_000.0];
+        #[rustfmt::skip]
+        let constraints = na::DMatrix::from_row_slice(4, 3, &[
+            10.0, 15.0, 20.0, 
+            13.0, 15.0, 5.0,
+            10.0, 5.0, 10.0,
+            1.0, 0.0, 0.0,
+        ]);
+        let req = vec![620.0, 880.0, 550.0, 10.0];
+        let res_table = simplex_method(constraints, req, obj_f, true);
+        assert!(
+            (res_table[(0, 8)] - 213_0000.0).abs() < std::f32::EPSILON,
+            "The expected optimal value: 213_0000, the value we got: {}",
+            res_table[(0, 8)]
+        );
+    }
+    #[test]
+    fn simplex_test_problem4() {
+        /*
+        Objective function = 35x + 45y + 55z
+        Constraints:
+        20x + 15y + 20z <= 550
+        27x + 35y + 50z <= 900
+        10x + 5y + 10z <= 550
+        x, y, z >= 0
+        */
+        let obj_f = vec![35.0, 45.0, 55.0];
+        #[rustfmt::skip]
+        let constraints = na::DMatrix::from_row_slice(3, 3, &[
+            20.0, 15.0, 20.0, 
+            27.0, 35.0, 50.0,
+            10.0, 5.0, 10.0,
+        ]);
+        let req = vec![550.0, 900.0, 550.0];
+        let res_table = simplex_method(constraints, req, obj_f, true);
+        assert!(
+            (res_table[(0, 7)] - 1162.7118).abs() < std::f32::EPSILON,
+            "The expected optimal value:  1162.7118, the value we got: {}",
+            res_table[(0, 7)]
+        );
+    }
 }
